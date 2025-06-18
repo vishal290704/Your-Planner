@@ -1,39 +1,60 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Navbar from "./components/Navbar";
 import { v4 as uuidv4 } from "uuid";
 
 function App() {
-  const [todo, settodo] = useState("");
-  const [todos, settodos] = useState([]);
-
-  const handleEdit = () => {};
-
-  const handleDelete = (e, id) => {
-    let newTodos = todos.filter(item=>{
-      return item.id!==id
-    });
-    // newTodos[index].isCompleted = !newTodos[index].isCompleted;
-    settodos(newTodos);
-
-  };
+  const [todo, setTodo] = useState("");
+  const [todos, setTodos] = useState([]);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editId, setEditId] = useState(null);
+  const inputRef = useRef(null);
 
   const handleAdd = () => {
-    settodos([...todos, { id: uuidv4(), todo, isCompleted: false }]);
-    settodo("");
+    if (todo.trim() === "") return;
+
+    if (isEditing) {
+      // Update existing todo
+      const updatedTodos = todos.map((item) =>
+        item.id === editId ? { ...item, todo } : item
+      );
+      setTodos(updatedTodos);
+      setIsEditing(false);
+      setEditId(null);
+    } else {
+      // Add new todo
+      setTodos([...todos, { id: uuidv4(), todo, isCompleted: false }]);
+    }
+
+    setTodo("");
   };
+
+  const handleDelete = (e, id) => {
+    const newTodos = todos.filter((item) => item.id !== id);
+    setTodos(newTodos);
+  };
+
+  const handleEdit = (e, id) => {
+    const t = todos.find((item) => item.id === id);
+    setTodo(t.todo);
+    setIsEditing(true);
+    setEditId(id);
+    setTimeout(() => {
+      inputRef.current.focus();
+      inputRef.current.selectionStart = inputRef.current.selectionEnd = inputRef.current.value.length;
+    }, 0);
+  };
+  
+
   const handleChange = (e) => {
-    // settodos([...todos, {todo, isCompleted:false}])
-    settodo(e.target.value);
+    setTodo(e.target.value);
   };
 
   const handleCheckbox = (e) => {
-    let id = e.target.name;
-    let index = todos.findIndex((item) => {
-      return item.id === id;
-    });
-    let newTodos = [...todos];
-    newTodos[index].isCompleted = !newTodos[index].isCompleted;
-    settodos(newTodos);
+    const id = e.target.name;
+    const newTodos = todos.map((item) =>
+      item.id === id ? { ...item, isCompleted: !item.isCompleted } : item
+    );
+    setTodos(newTodos);
   };
 
   return (
@@ -42,51 +63,65 @@ function App() {
       <div className="container mx-auto bg-violet-200 p-5 my-5 rounded-2xl min-h-[80vh]">
         <div className="addTodo my-3">
           <h2 className="flex justify-center items-center text-2xl font-bold">
-            Add a Todo
+            {isEditing ? "Edit Todo" : "Add a Todo"}
           </h2>
-          <input
-            onChange={handleChange}
-            value={todo}
-            className="border border-gray-400 w-96 bg-white rounded-l-lg px-3 py-1.5 text-black focus:outline-none focus:border-violet-500"
-            type="text"
-            placeholder="write todo... "
-          />
+          <div className="flex justify-center my-5">
+            <input
+              ref={inputRef}
+              onChange={handleChange}
+              value={todo}
+              className="border italic border-gray-400 w-2/3 bg-white rounded-l-lg px-3 py-2 text-black focus:outline-none focus:border-violet-500"
+              type="text"
+              placeholder="Write todo..."
+            />
 
-          <button
-            onClick={handleAdd}
-            className="bg-violet-500 hover:bg-violet-800 border rounded-r-lg font-bold border-violet-500 text-white py-1.5 px-2.5"
-          >
-            Add
-          </button>
+            <button
+              onClick={handleAdd}
+              className="bg-violet-500 hover:bg-violet-800 border rounded-r-lg font-bold border-violet-500 text-white py-1.5 px-2.5"
+            >
+              {isEditing ? "Update" : "Save"}
+            </button>
+          </div>
         </div>
+
         <h2 className="flex justify-center items-center my-3 text-2xl font-bold">
           Your Todos
         </h2>
+
         <div className="todos">
-          {todos.map((item) => {
-            return (
-              <div key={item.id} className="todo flex justify-between items-center bg-white p-3 rounded-lg shadow my-2">
+          {todos.length === 0 && (
+            <div className="mx-10 font-bold">No todos to display</div>
+          )}
+          {todos.map((item) => (
+            <div
+              key={item.id}
+              className="todo flex justify-between items-center bg-white p-3 rounded-lg shadow my-2"
+            >
               <div className="flex items-center">
-                <input 
-                  name={item.id} 
-                  onChange={handleCheckbox} 
-                  type="checkbox" 
-                  checked={item.isCompleted} 
+                <input
+                  name={item.id}
+                  onChange={handleCheckbox}
+                  type="checkbox"
+                  checked={item.isCompleted}
                   className="mr-3"
                 />
-                <div className={item.isCompleted ? "line-through" : ""}>
+                <div
+                  className={`font-medium ${
+                    item.isCompleted ? "line-through text-gray-500" : ""
+                  }`}
+                >
                   {item.todo}
                 </div>
               </div>
-            
+
               <div className="buttons flex">
                 <button
-                  onClick={() => handleEdit(item.id)}
+                  onClick={(e) => handleEdit(e, item.id)}
                   className="bg-violet-500 hover:bg-violet-800 border rounded-lg font-bold border-violet-500 text-white py-1 mx-1 px-2.5"
                 >
                   Edit
                 </button>
-            
+
                 <button
                   onClick={(e) => handleDelete(e, item.id)}
                   className="bg-violet-500 hover:bg-violet-800 border rounded-lg font-bold border-violet-500 text-white py-1 px-2 mx-1"
@@ -95,9 +130,7 @@ function App() {
                 </button>
               </div>
             </div>
-            
-            );
-          })}
+          ))}
         </div>
       </div>
     </>
