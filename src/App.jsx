@@ -13,7 +13,6 @@ function App() {
     if (todo.trim() === "") return;
 
     if (isEditing) {
-      // Update existing todo
       const updatedTodos = todos.map((item) =>
         item.id === editId ? { ...item, todo } : item
       );
@@ -21,7 +20,6 @@ function App() {
       setIsEditing(false);
       setEditId(null);
     } else {
-      // Add new todo
       setTodos([...todos, { id: uuidv4(), todo, isCompleted: false }]);
     }
 
@@ -60,7 +58,7 @@ function App() {
   return (
     <>
       <Navbar />
-      <div className="container mx-auto bg-violet-200 p-5 my-5 rounded-2xl min-h-[80vh]">
+      <div className="container mx-auto bg-red-100 p-5 my-5 rounded-2xl min-h-[80vh]">
         <div className="addTodo my-3">
           <h2 className="flex justify-center items-center text-2xl font-bold">
             {isEditing ? "Edit Todo" : "Add a Todo"}
