@@ -27,7 +27,7 @@ function App() {
   };
 
   const handleDelete = (e, id) => {
-    const newTodos = todos.filter((item) => item.id !== id);
+    const newTodos = todos.filter((item) => item.id!== id);
     setTodos(newTodos);
   };
 
@@ -52,6 +52,7 @@ function App() {
     const newTodos = todos.map((item) =>
       item.id === id ? { ...item, isCompleted: !item.isCompleted } : item
     );
+
     setTodos(newTodos);
   };
 
@@ -90,11 +91,14 @@ function App() {
           {todos.length === 0 && (
             <div className="mx-10 font-bold">No todos to display</div>
           )}
-          {todos.map((item) => (
+                   {todos.map((item) => (
             <div
               key={item.id}
-              className="todo flex justify-between items-center bg-white p-3 rounded-lg shadow my-2"
+              className={`todo flex justify-between items-center p-3 rounded-lg shadow my-2 transition-colors duration-300 ${
+                item.isCompleted ? "bg-violet-100" : "bg-white"
+              }`}
             >
+
               <div className="flex items-center">
                 <input
                   name={item.id}
