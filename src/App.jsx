@@ -59,7 +59,7 @@ function App() {
   return (
     <>
       <Navbar />
-      <div className="container mx-auto bg-red-100 p-5 my-5 rounded-2xl min-h-[80vh]">
+      <div className="container mx-auto bg-red-100 p-5 my-5 rounded-2xl min-h-[96clevh]">
         <div className="addTodo my-3">
           <h2 className="flex justify-center items-center text-2xl font-bold">
             {isEditing ? "Edit Todo" : "Add a Todo"}
