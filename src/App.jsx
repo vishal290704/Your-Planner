@@ -94,7 +94,7 @@ function App() {
                    {todos.map((item) => (
             <div
               key={item.id}
-              className={`todo flex justify-between items-center p-3 rounded-lg shadow my-2 transition-colors duration-300 ${
+              className={`todo flex justify-between items-center p-3 rounded-lg shadow my-1.5 transition-colors duration-300 ${
                 item.isCompleted ? "bg-violet-100" : "bg-white"
               }`}
             >
