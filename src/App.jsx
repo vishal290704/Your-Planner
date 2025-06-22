@@ -26,10 +26,12 @@ function App() {
     setTodo("");
   };
 
+
   const handleDelete = (e, id) => {
     const newTodos = todos.filter((item) => item.id!== id);
     setTodos(newTodos);
   };
+
 
   const handleEdit = (e, id) => {
     const t = todos.find((item) => item.id === id);
@@ -55,6 +57,7 @@ function App() {
 
     setTodos(newTodos);
   };
+
 
   return (
     <>
@@ -89,7 +92,7 @@ function App() {
 
         <div className="todos">
           {todos.length === 0 && (
-            <div className="mx-10 font-bold">No todos to display</div>
+            <div className="mx-10 font-bold">Nothing here yet. Add a task!</div>
           )}
                    {todos.map((item) => (
             <div
