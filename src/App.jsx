@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Navbar from "./components/Navbar";
 import { v4 as uuidv4 } from "uuid";
 
@@ -9,7 +9,15 @@ function App() {
   const [editId, setEditId] = useState(null);
   const inputRef = useRef(null);
 
+  useEffect(() => {
+    let todoString = localStorage.getItem("todos")
+    if(todoString){
+    let todos = JSON.parse(localStorage.getItem("todos"))
+    setTodos(todos)
+  }
+  }, [])
   
+
 
   const handleAdd = () => {
     if (todo.trim() === "") return;
