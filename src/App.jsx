@@ -9,6 +9,8 @@ function App() {
   const [editId, setEditId] = useState(null);
   const inputRef = useRef(null);
 
+  
+
   const handleAdd = () => {
     if (todo.trim() === "") return;
 
@@ -24,12 +26,14 @@ function App() {
     }
 
     setTodo("");
+    savetoLS();
   };
 
 
   const handleDelete = (e, id) => {
     const newTodos = todos.filter((item) => item.id!== id);
     setTodos(newTodos);
+    savetoLS();
   };
 
 
@@ -42,6 +46,7 @@ function App() {
       inputRef.current.focus();
       inputRef.current.selectionStart = inputRef.current.selectionEnd = inputRef.current.value.length;
     }, 0);
+    savetoLS();
   };
   
 
@@ -56,8 +61,12 @@ function App() {
     );
 
     setTodos(newTodos);
+    savetoLS();
   };
 
+  const savetoLS = (params)=>{
+    localStorage.setItem("todos", JSON.stringify(todos))
+  }
 
   return (
     <>
