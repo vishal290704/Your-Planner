@@ -8,15 +8,16 @@ function App() {
   const [isEditing, setIsEditing] = useState(false);
   const [editId, setEditId] = useState(null);
   const inputRef = useRef(null);
-  // const [showFinished, setshowFinished] = useState(true)
-  const [loaded, setLoaded] = useState(false);  
+  const [loaded, setLoaded] = useState(false);
+
+
 
   useEffect(() => {
     const todoString = localStorage.getItem("todos");
     if (todoString) {
       setTodos(JSON.parse(todoString));
     }
-    setLoaded(true); 
+    setLoaded(true);
   }, []);
 
   // Save to localStorage when todos change
@@ -25,8 +26,6 @@ function App() {
       localStorage.setItem("todos", JSON.stringify(todos));
     }
   }, [todos, loaded]);
-  
-
 
   const handleAdd = () => {
     if (todo.trim() === "") return;
@@ -43,16 +42,12 @@ function App() {
     }
 
     setTodo("");
-
   };
-
 
   const handleDelete = (e, id) => {
-    const newTodos = todos.filter((item) => item.id!== id);
+    const newTodos = todos.filter((item) => item.id !== id);
     setTodos(newTodos);
-
   };
-
 
   const handleEdit = (e, id) => {
     const t = todos.find((item) => item.id === id);
@@ -61,11 +56,10 @@ function App() {
     setEditId(id);
     setTimeout(() => {
       inputRef.current.focus();
-      inputRef.current.selectionStart = inputRef.current.selectionEnd = inputRef.current.value.length;
+      inputRef.current.selectionStart = inputRef.current.selectionEnd =
+        inputRef.current.value.length;
     }, 0);
-
   };
-  
 
   const handleChange = (e) => {
     setTodo(e.target.value);
@@ -78,9 +72,7 @@ function App() {
     );
 
     setTodos(newTodos);
-
   };
-
 
   return (
     <>
@@ -95,14 +87,14 @@ function App() {
               ref={inputRef}
               onChange={handleChange}
               value={todo}
-              className="border italic border-gray-400 w-2/3 bg-white rounded-l-lg px-3 py-2 text-black focus:outline-none focus:border-violet-500"
+              className="border italic border-gray-400 w-2/3 bg-white rounded-l-lg px-3 py-2 text-black focus:outline-none focus:border-violet-500 "
               type="text"
               placeholder="Write todo..."
             />
 
             <button
               onClick={handleAdd}
-              className="cursor-pointer bg-violet-500 hover:bg-violet-800 border rounded-r-lg font-bold border-violet-500 text-white py-1.5 px-2.5"
+              className="cursor-pointer bg-violet-500 hover:bg-violet-800 border rounded-r-lg font-bold border-violet-500 text-white py-1.5 px-2.5 "
             >
               {isEditing ? "Update" : "Save"}
             </button>
@@ -117,21 +109,20 @@ function App() {
           {todos.length === 0 && (
             <div className="mx-10 font-bold">Nothing here yet. Add a task!</div>
           )}
-                   {todos.map((item) => (
+          {todos.map((item) => (
             <div
               key={item.id}
               className={`todo flex justify-between items-center p-3 rounded-lg shadow my-1.5 transition-colors duration-300 ${
                 item.isCompleted ? "bg-violet-100" : "bg-white"
               }`}
             >
-
               <div className="flex items-center">
                 <input
                   name={item.id}
                   onChange={handleCheckbox}
                   type="checkbox"
                   checked={item.isCompleted}
-                  className="mr-3 cursor-pointer"
+                  className="mr-3 cursor-pointer shadow-md transform transition-transform duration-200 hover:scale-105"
                 />
                 <div
                   className={`font-medium ${
@@ -145,14 +136,14 @@ function App() {
               <div className="buttons flex">
                 <button
                   onClick={(e) => handleEdit(e, item.id)}
-                  className="cursor-pointer bg-violet-500 hover:bg-violet-800 border rounded-lg font-bold border-violet-500 text-white py-1 mx-1 px-2.5"
+                  className="cursor-pointer bg-violet-500 hover:bg-violet-800 border rounded-lg font-bold border-violet-500 text-white py-1 mx-1 px-2.5 shadow-md transform transition-transform duration-300 hover:scale-105"
                 >
                   Edit
                 </button>
 
                 <button
                   onClick={(e) => handleDelete(e, item.id)}
-                  className="cursor-pointer bg-violet-500 hover:bg-violet-800 border rounded-lg font-bold border-violet-500 text-white py-1 px-2 mx-1"
+                  className="cursor-pointer bg-violet-500 hover:bg-violet-800 border rounded-lg font-bold border-violet-500 text-white py-1 px-2 mx-1 shadow-md transform transition-transform duration-300 hover:scale-105"
                 >
                   Delete
                 </button>
