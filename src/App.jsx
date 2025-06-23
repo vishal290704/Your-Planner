@@ -8,6 +8,7 @@ function App() {
   const [isEditing, setIsEditing] = useState(false);
   const [editId, setEditId] = useState(null);
   const inputRef = useRef(null);
+  const [showFinished, setshowFinished] = useState(true)
 
   useEffect(() => {
     let todoString = localStorage.getItem("todos")
@@ -76,6 +77,10 @@ function App() {
     localStorage.setItem("todos", JSON.stringify(todos))
   }
 
+  const toggleFinished =  (e)=>{
+    setshowFinished(!showFinished)
+  }
+
   return (
     <>
       <Navbar />
@@ -102,7 +107,7 @@ function App() {
             </button>
           </div>
         </div>
-
+        <input onChange={toggleFinished} type="checkbox" checked={showFinished} />Show Finished
         <h2 className="flex justify-center items-center my-3 text-2xl font-bold">
           Your Todos
         </h2>
