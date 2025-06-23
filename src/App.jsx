@@ -9,14 +9,22 @@ function App() {
   const [editId, setEditId] = useState(null);
   const inputRef = useRef(null);
   // const [showFinished, setshowFinished] = useState(true)
+  const [loaded, setLoaded] = useState(false);  
 
   useEffect(() => {
-    let todoString = localStorage.getItem("todos")
-    if(todoString){
-    let todos = JSON.parse(localStorage.getItem("todos"))
-    setTodos(todos)
-  }
-  }, [])
+    const todoString = localStorage.getItem("todos");
+    if (todoString) {
+      setTodos(JSON.parse(todoString));
+    }
+    setLoaded(true); 
+  }, []);
+
+  // Save to localStorage when todos change
+  useEffect(() => {
+    if (loaded) {
+      localStorage.setItem("todos", JSON.stringify(todos));
+    }
+  }, [todos, loaded]);
   
 
 
@@ -35,14 +43,14 @@ function App() {
     }
 
     setTodo("");
-    savetoLS();
+
   };
 
 
   const handleDelete = (e, id) => {
     const newTodos = todos.filter((item) => item.id!== id);
     setTodos(newTodos);
-    savetoLS();
+
   };
 
 
@@ -55,7 +63,7 @@ function App() {
       inputRef.current.focus();
       inputRef.current.selectionStart = inputRef.current.selectionEnd = inputRef.current.value.length;
     }, 0);
-    savetoLS();
+
   };
   
 
@@ -70,16 +78,9 @@ function App() {
     );
 
     setTodos(newTodos);
-    savetoLS();
+
   };
 
-  const savetoLS = (params)=>{
-    localStorage.setItem("todos", JSON.stringify(todos))
-  }
-
-  // const toggleFinished =  (e)=>{
-  //   setshowFinished(!showFinished)
-  // }
 
   return (
     <>
@@ -101,7 +102,7 @@ function App() {
 
             <button
               onClick={handleAdd}
-              className="bg-violet-500 hover:bg-violet-800 border rounded-r-lg font-bold border-violet-500 text-white py-1.5 px-2.5"
+              className="cursor-pointer bg-violet-500 hover:bg-violet-800 border rounded-r-lg font-bold border-violet-500 text-white py-1.5 px-2.5"
             >
               {isEditing ? "Update" : "Save"}
             </button>
@@ -130,7 +131,7 @@ function App() {
                   onChange={handleCheckbox}
                   type="checkbox"
                   checked={item.isCompleted}
-                  className="mr-3"
+                  className="mr-3 cursor-pointer"
                 />
                 <div
                   className={`font-medium ${
@@ -144,14 +145,14 @@ function App() {
               <div className="buttons flex">
                 <button
                   onClick={(e) => handleEdit(e, item.id)}
-                  className="bg-violet-500 hover:bg-violet-800 border rounded-lg font-bold border-violet-500 text-white py-1 mx-1 px-2.5"
+                  className="cursor-pointer bg-violet-500 hover:bg-violet-800 border rounded-lg font-bold border-violet-500 text-white py-1 mx-1 px-2.5"
                 >
                   Edit
                 </button>
 
                 <button
                   onClick={(e) => handleDelete(e, item.id)}
-                  className="bg-violet-500 hover:bg-violet-800 border rounded-lg font-bold border-violet-500 text-white py-1 px-2 mx-1"
+                  className="cursor-pointer bg-violet-500 hover:bg-violet-800 border rounded-lg font-bold border-violet-500 text-white py-1 px-2 mx-1"
                 >
                   Delete
                 </button>
