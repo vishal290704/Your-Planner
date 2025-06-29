@@ -1,33 +1,24 @@
 import { useState, useRef, useEffect } from "react";
 import Navbar from "./components/Navbar";
+import WebProvider, { useWebContext } from "./contexts/webContexts";
 import { v4 as uuidv4 } from "uuid";
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
+import { cn } from "./components/util";
+import { styles } from "./components/util";
+import "./App.css"; // Assuming Tailwind is set up in this file
 
-
-function App() {
+function AppContent() {
   const [todo, setTodo] = useState("");
   const [todos, setTodos] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [editId, setEditId] = useState(null);
   const inputRef = useRef(null);
   const [loaded, setLoaded] = useState(false);
-  const [darkMode, setDarkMode] = useState(() => {
-    return document.documentElement.classList.contains('dark');
-  });
-  
-  const toggleDarkMode = () => {
-    const newMode = !darkMode;
-    setDarkMode(newMode);
-    if (newMode) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  };
-  
 
+  const {darkMode} = useWebContext();
 
+  // Load todos from localStorage
   useEffect(() => {
     const todoString = localStorage.getItem("todos");
     if (todoString) {
@@ -36,7 +27,7 @@ function App() {
     setLoaded(true);
   }, []);
 
-  // Save to localStorage when todos change
+  // Save todos to localStorage on change
   useEffect(() => {
     if (loaded) {
       localStorage.setItem("todos", JSON.stringify(todos));
@@ -77,6 +68,9 @@ function App() {
     }, 0);
   };
 
+  const darkModeStr = `${!darkMode? "bg-gray-500": "bg-blue-500"}`
+
+
   const handleChange = (e) => {
     setTodo(e.target.value);
   };
@@ -86,16 +80,20 @@ function App() {
     const newTodos = todos.map((item) =>
       item.id === id ? { ...item, isCompleted: !item.isCompleted } : item
     );
-
     setTodos(newTodos);
   };
-
   return (
-    <>
- 
-<Navbar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
-
-      <div className="mx-3 md:container md:mx-auto bg-red-100 dark:bg-gray-900 p-5 my-5 rounded-2xl md:min-h-[96vh] text-black dark:text-white">
+    <div>
+      <Navbar />
+      {/* <div className="mx-3 md:container md:mx-auto dark:bg-gray-900 p-5 my-5 rounded-2xl md:min-h-[96vh] text-black dark:text-white"> */}
+      <div className={cn(
+        darkMode ? (styles.darkBg) : (styles.lightBg ),
+        darkMode ? (styles.darkText) : (styles.lightText ),
+        darkMode ? (styles.darkTransition) : (styles.lightTransition),
+        darkMode ? (styles.darkBorder) : (styles.lightBorder),
+        "mx-3 md:container md:mx-auto p-5 my-5 rounded-2xl md:min-h-[96vh] transition-colors duration-300"
+      )}>
+        {/* ...existing code for addTodo, todos list, etc... */}
         <div className="addTodo my-3">
           <h2 className="flex justify-center items-center text-2xl font-bold">
             {isEditing ? "Edit Todo" : "Add a Todo"}
@@ -105,25 +103,30 @@ function App() {
               ref={inputRef}
               onChange={handleChange}
               value={todo}
-              className="border italic border-gray-400 w-full md:w-2/3 bg-white rounded-l-lg px-3 py-2 dark:bg-gray-500 text-black dark:text-white focus:outline-none focus:border-violet-500 "
+              // className="border italic border-gray-500 border-r-gray-900 w-full md:w-2/3 bg-white rounded-l-lg px-3 py-2 dark:bg-gray-500 text-black dark:text-white focus:outline-none focus:border-violet-500"
+              className={cn(
+                darkMode ? (styles.inputDark) : (styles.inputLight),
+                darkMode ? (styles.inputPlaceholderDark) : (styles.inputPlaceholderLight),
+                darkMode ? (styles.inputFocusDark) : (styles.inputFocusLight),
+                darkMode ? (styles.inputBorderDark) : (styles.inputBorderLight),
+                darkMode ? "":"",
+                "w-full md:w-2/3 px-3 py-2 rounded-l-lg focus:outline-none focus:border-violet-500"
+              )}
               type="text"
               placeholder="Write todo..."
               onKeyDown={(e) => e.key === "Enter" && handleAdd()}
             />
-
             <button
               onClick={handleAdd}
-              className="cursor-pointer bg-violet-500 hover:bg-violet-800 border rounded-r-lg font-bold border-violet-500 text-white py-1.5 px-2.5 "
+              className="cursor-pointer bg-violet-500 hover:bg-violet-800 border rounded-r-lg font-bold border-violet-500 text-white py-1.5 px-2.5"
             >
               {isEditing ? "Update" : "Save"}
             </button>
           </div>
         </div>
-        {/* <input onChange={toggleFinished} type="checkbox" checked={showFinished} />Show Finished */}
         <h2 className="flex justify-center items-center my-3 text-2xl font-bold">
           Your Todos
         </h2>
-
         <div className="todos">
           {todos.length === 0 && (
             <div className="mx-10 font-bold">Nothing here yet. Add a task!</div>
@@ -132,11 +135,15 @@ function App() {
             <div
               key={item.id}
               className={`todo flex justify-between items-center p-3 rounded-lg shadow my-1.5 transition-colors duration-300 ${
-                item.isCompleted ? "bg-violet-100 dark:bg-violet-800"
-                : "bg-white dark:bg-gray-800"
+                item.isCompleted 
+                     ? darkMode
+                    ? "bg-violet-900"
+                    : "bg-violet-100"
+                  : darkMode
+                  ? "bg-gray-500"
+                  : "bg-white"
               }`}
             >
-              
               <div className="flex items-center">
                 <input
                   name={item.id}
@@ -146,15 +153,15 @@ function App() {
                   className="mr-3 cursor-pointer shadow-md transform transition-transform duration-200 hover:scale-105"
                 />
                 <div
-                 className={`font-medium break-words w-full ${
-                  item.isCompleted ? "line-through text-gray-500 dark:text-gray-400" : ""
-                }`}
+                  className={`font-medium break-words w-full ${
+                    item.isCompleted
+                      ? "line-through text-gray-500 dark:text-gray-400"
+                      : ""
+                  }`}
                 >
                   {item.todo}
                 </div>
               </div>
-              
-
               <div className="buttons flex flex-wrap">
                 <button
                   onClick={(e) => handleEdit(e, item.id)}
@@ -162,7 +169,6 @@ function App() {
                 >
                   <FaEdit />
                 </button>
-
                 <button
                   onClick={(e) => handleDelete(e, item.id)}
                   className="cursor-pointer bg-violet-500 hover:bg-violet-800 border rounded-lg font-bold border-violet-500 text-white py-2 px-4 mx-1 shadow-md transform transition-transform duration-300 hover:scale-105"
@@ -174,19 +180,26 @@ function App() {
           ))}
         </div>
         {todos.length > 0 && (
-  <div className="flex justify-center mt-6">
-    <button
-      onClick={() => setTodos([])}
-      className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-300"
-    >
-      Clear All Todos
-    </button>
-  </div>
-)}
-
+          <div className="flex justify-center mt-6">
+            <button
+              onClick={() => setTodos([])}
+              className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-300"
+            >
+              Clear All Todos
+            </button>
+          </div>
+        )}
       </div>
-    </>
+    </div>
   );
 }
 
-export default App;
+export default function App() {
+  return (
+    <WebProvider>
+      <AppContent />
+    </WebProvider>
+  );
+}
+
+
