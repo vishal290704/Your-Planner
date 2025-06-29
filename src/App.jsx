@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 
+
 function App() {
   const [todo, setTodo] = useState("");
   const [todos, setTodos] = useState([]);
@@ -11,17 +12,20 @@ function App() {
   const [editId, setEditId] = useState(null);
   const inputRef = useRef(null);
   const [loaded, setLoaded] = useState(false);
-  const [darkMode, setDarkMode] = useState(false);
-
-
+  const [darkMode, setDarkMode] = useState(() => {
+    return document.documentElement.classList.contains('dark');
+  });
+  
   const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
-    if (!darkMode) {
-      document.documentElement.classList.add("dark");
+    const newMode = !darkMode;
+    setDarkMode(newMode);
+    if (newMode) {
+      document.documentElement.classList.add('dark');
     } else {
-      document.documentElement.classList.remove("dark");
+      document.documentElement.classList.remove('dark');
     }
   };
+  
 
 
   useEffect(() => {
@@ -88,16 +92,9 @@ function App() {
 
   return (
     <>
-      {/* Dark mode toggle */}
-      <div className="flex justify-end p-4">
-        <button
-          onClick={toggleDarkMode}
-          className="bg-gray-800 text-white dark:bg-white dark:text-black px-4 py-2 rounded-md shadow transition duration-300"
-        >
-          Toggle {darkMode ? "Light" : "Dark"} Mode
-        </button>
-      </div>
-      <Navbar />
+ 
+<Navbar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
+
       <div className="mx-3 md:container md:mx-auto bg-red-100 dark:bg-gray-900 p-5 my-5 rounded-2xl md:min-h-[96vh] text-black dark:text-white">
         <div className="addTodo my-3">
           <h2 className="flex justify-center items-center text-2xl font-bold">
