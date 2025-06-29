@@ -11,7 +11,17 @@ function App() {
   const [editId, setEditId] = useState(null);
   const inputRef = useRef(null);
   const [loaded, setLoaded] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
 
+
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+    if (!darkMode) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  };
 
 
   useEffect(() => {
@@ -78,8 +88,17 @@ function App() {
 
   return (
     <>
+      {/* Dark mode toggle */}
+      <div className="flex justify-end p-4">
+        <button
+          onClick={toggleDarkMode}
+          className="bg-gray-800 text-white dark:bg-white dark:text-black px-4 py-2 rounded-md shadow transition duration-300"
+        >
+          Toggle {darkMode ? "Light" : "Dark"} Mode
+        </button>
+      </div>
       <Navbar />
-      <div className="container mx-auto bg-red-100 p-5 my-5 rounded-2xl min-h-[96vh]">
+      <div className="mx-3 md:container md:mx-auto bg-red-100 dark:bg-gray-900 p-5 my-5 rounded-2xl md:min-h-[96vh] text-black dark:text-white">
         <div className="addTodo my-3">
           <h2 className="flex justify-center items-center text-2xl font-bold">
             {isEditing ? "Edit Todo" : "Add a Todo"}
@@ -89,9 +108,10 @@ function App() {
               ref={inputRef}
               onChange={handleChange}
               value={todo}
-              className="border italic border-gray-400 w-2/3 bg-white rounded-l-lg px-3 py-2 text-black focus:outline-none focus:border-violet-500 "
+              className="border italic border-gray-400 w-full md:w-2/3 bg-white rounded-l-lg px-3 py-2 dark:bg-gray-500 text-black dark:text-white focus:outline-none focus:border-violet-500 "
               type="text"
               placeholder="Write todo..."
+              onKeyDown={(e) => e.key === "Enter" && handleAdd()}
             />
 
             <button
@@ -115,9 +135,11 @@ function App() {
             <div
               key={item.id}
               className={`todo flex justify-between items-center p-3 rounded-lg shadow my-1.5 transition-colors duration-300 ${
-                item.isCompleted ? "bg-violet-100" : "bg-white"
+                item.isCompleted ? "bg-violet-100 dark:bg-violet-800"
+                : "bg-white dark:bg-gray-800"
               }`}
             >
+              
               <div className="flex items-center">
                 <input
                   name={item.id}
@@ -127,15 +149,16 @@ function App() {
                   className="mr-3 cursor-pointer shadow-md transform transition-transform duration-200 hover:scale-105"
                 />
                 <div
-                  className={`font-medium ${
-                    item.isCompleted ? "line-through text-gray-500" : ""
-                  }`}
+                 className={`font-medium break-words w-full ${
+                  item.isCompleted ? "line-through text-gray-500 dark:text-gray-400" : ""
+                }`}
                 >
                   {item.todo}
                 </div>
               </div>
+              
 
-              <div className="buttons flex">
+              <div className="buttons flex flex-wrap">
                 <button
                   onClick={(e) => handleEdit(e, item.id)}
                   className="cursor-pointer bg-violet-500 hover:bg-violet-800 border rounded-lg font-bold border-violet-500 text-white py-2 mx-1 px-4 shadow-md transform transition-transform duration-300 hover:scale-105"
@@ -153,6 +176,17 @@ function App() {
             </div>
           ))}
         </div>
+        {todos.length > 0 && (
+  <div className="flex justify-center mt-6">
+    <button
+      onClick={() => setTodos([])}
+      className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-300"
+    >
+      Clear All Todos
+    </button>
+  </div>
+)}
+
       </div>
     </>
   );
