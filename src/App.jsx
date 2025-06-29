@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import Navbar from "./components/Navbar";
 import { v4 as uuidv4 } from "uuid";
+import { FaEdit } from "react-icons/fa";
+import { MdDelete } from "react-icons/md";
 
 function App() {
   const [todo, setTodo] = useState("");
@@ -136,16 +138,16 @@ function App() {
               <div className="buttons flex">
                 <button
                   onClick={(e) => handleEdit(e, item.id)}
-                  className="cursor-pointer bg-violet-500 hover:bg-violet-800 border rounded-lg font-bold border-violet-500 text-white py-1 mx-1 px-2.5 shadow-md transform transition-transform duration-300 hover:scale-105"
+                  className="cursor-pointer bg-violet-500 hover:bg-violet-800 border rounded-lg font-bold border-violet-500 text-white py-2 mx-1 px-4 shadow-md transform transition-transform duration-300 hover:scale-105"
                 >
-                  Edit
+                  <FaEdit />
                 </button>
 
                 <button
                   onClick={(e) => handleDelete(e, item.id)}
-                  className="cursor-pointer bg-violet-500 hover:bg-violet-800 border rounded-lg font-bold border-violet-500 text-white py-1 px-2 mx-1 shadow-md transform transition-transform duration-300 hover:scale-105"
+                  className="cursor-pointer bg-violet-500 hover:bg-violet-800 border rounded-lg font-bold border-violet-500 text-white py-2 px-4 mx-1 shadow-md transform transition-transform duration-300 hover:scale-105"
                 >
-                  Delete
+                  <MdDelete />
                 </button>
               </div>
             </div>
