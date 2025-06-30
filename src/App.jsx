@@ -16,7 +16,7 @@ function AppContent() {
   const inputRef = useRef(null);
   const [loaded, setLoaded] = useState(false);
 
-  const {darkMode} = useWebContext();
+  const { darkMode } = useWebContext();
 
   // Load todos from localStorage
   useEffect(() => {
@@ -68,8 +68,7 @@ function AppContent() {
     }, 0);
   };
 
-  const darkModeStr = `${!darkMode? "bg-gray-500": "bg-blue-500"}`
-
+  const darkModeStr = `${!darkMode ? "bg-gray-500" : "bg-blue-500"}`;
 
   const handleChange = (e) => {
     setTodo(e.target.value);
@@ -86,13 +85,16 @@ function AppContent() {
     <div>
       <Navbar />
       {/* <div className="mx-3 md:container md:mx-auto dark:bg-gray-900 p-5 my-5 rounded-2xl md:min-h-[96vh] text-black dark:text-white"> */}
-      <div className={cn(
-        darkMode ? (styles.darkBg) : (styles.lightBg ),
-        darkMode ? (styles.darkText) : (styles.lightText ),
-        darkMode ? (styles.darkTransition) : (styles.lightTransition),
-        darkMode ? (styles.darkBorder) : (styles.lightBorder),
-        "mx-3 md:container md:mx-auto p-5 my-5 rounded-2xl md:min-h-[96vh] transition-colors duration-300"
-      )}>
+      <div
+        className={cn(
+          darkMode ? styles.darkBg : styles.lightBg,
+          darkMode ? styles.darkText : styles.lightText,
+          darkMode ? styles.darkTransition : styles.lightTransition,
+          darkMode ? styles.darkBorder : styles.lightBorder,
+          darkMode ? styles.darkGradientCompleted : styles.darkGradientUncompleted,
+          "mx-3 md:container md:mx-auto p-5 my-5 rounded-2xl md:min-h-[96vh] transition-colors duration-300"
+        )}
+      >
         {/* ...existing code for addTodo, todos list, etc... */}
         <div className="addTodo my-3">
           <h2 className="flex justify-center items-center text-2xl font-bold">
@@ -105,11 +107,13 @@ function AppContent() {
               value={todo}
               // className="border italic border-gray-500 border-r-gray-900 w-full md:w-2/3 bg-white rounded-l-lg px-3 py-2 dark:bg-gray-500 text-black dark:text-white focus:outline-none focus:border-violet-500"
               className={cn(
-                darkMode ? (styles.inputDark) : (styles.inputLight),
-                darkMode ? (styles.inputPlaceholderDark) : (styles.inputPlaceholderLight),
-                darkMode ? (styles.inputFocusDark) : (styles.inputFocusLight),
-                darkMode ? (styles.inputBorderDark) : (styles.inputBorderLight),
-                darkMode ? "":"",
+                darkMode ? styles.inputDark : styles.inputLight,
+                darkMode
+                  ? styles.inputPlaceholderDark
+                  : styles.inputPlaceholderLight,
+                darkMode ? styles.inputFocusDark : styles.inputFocusLight,
+                darkMode ? styles.inputBorderDark : styles.inputBorderLight,
+                darkMode ? "" : "",
                 "w-full md:w-2/3 px-3 py-2 rounded-l-lg focus:outline-none focus:border-violet-500"
               )}
               type="text"
@@ -135,12 +139,12 @@ function AppContent() {
             <div
               key={item.id}
               className={`todo flex justify-between items-center p-3 rounded-lg shadow my-1.5 transition-colors duration-300 ${
-                item.isCompleted 
-                     ? darkMode
-                    ? "bg-violet-900"
+                item.isCompleted
+                  ? darkMode
+                    ? "bg-gradient-to-r from-gray-900 via-gray-800 to-gray-600"
                     : "bg-violet-100"
                   : darkMode
-                  ? "bg-gray-500"
+                  ? "bg-gradient-to-r from-violet-900 via-purple-900 to-indigo-600"
                   : "bg-white"
               }`}
             >
@@ -201,5 +205,3 @@ export default function App() {
     </WebProvider>
   );
 }
-
-
