@@ -168,16 +168,20 @@ function AppContent() {
               </div>
               <div className="buttons flex flex-wrap">
                 <button
+                 aria-label="Edit"
+                  title="Edit"
                   onClick={(e) => handleEdit(e, item.id)}
                   className="cursor-pointer bg-violet-500 hover:bg-violet-800 border rounded-lg font-bold border-violet-500 text-white py-2 mx-1 px-4 shadow-md transform transition-transform duration-300 hover:scale-105"
                 >
-                  <FaEdit />
+                  <FaEdit aria-hidden="true"/>
                 </button>
                 <button
+                  aria-label="Delete"
+                  title="Delete"
                   onClick={(e) => handleDelete(e, item.id)}
                   className="cursor-pointer bg-violet-500 hover:bg-violet-800 border rounded-lg font-bold border-violet-500 text-white py-2 px-4 mx-1 shadow-md transform transition-transform duration-300 hover:scale-105"
                 >
-                  <MdDelete />
+                  <MdDelete aria-hidden="true" />
                 </button>
               </div>
             </div>
@@ -186,6 +190,8 @@ function AppContent() {
         {todos.length > 0 && (
           <div className="flex justify-center mt-6">
             <button
+              aria-label="Clear All"
+              title="Clear All"
               onClick={() => setTodos([])}
               className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-300"
             >

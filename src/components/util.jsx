@@ -33,8 +33,8 @@ export const styles = {
     "bg-white text-black border-gray-300 focus:border-blue-500 focus:ring-blue-500",
   inputPlaceholderDark: "placeholder-gray-300",
   inputPlaceholderLight: "placeholder-gray-500",
-  inputFocusDark: "focus:ring-2 focus:ring-gray-500",
-  inputFocusLight: "focus:ring-2 focus:ring-blue-500",
+  inputFocusDark: "focus:ring-1 focus:ring-gray-500",
+  inputFocusLight: "focus:ring-1 focus:ring-blue-500",
   inputBorderDark: "border-gray-700",
   inputBorderLight: "border-gray-300",
 };
