@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import Navbar from "./components/Navbar";
-import WebProvider, { useWebContext } from "./contexts/webContexts";
+import WebProvider, { useWebContext } from "./contexts/webContexts.jsx";
 import { v4 as uuidv4 } from "uuid";
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
