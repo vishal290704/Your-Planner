@@ -83,7 +83,7 @@ function AppContent() {
     setTodos(newTodos);
   };
   return (
-    <div className={cn(darkMode ? styles.darkinnerbg : styles.lightinnerbg)}>
+    <div className={cn(darkMode ? styles.darkinnerbg : styles.lightinnerbg, "h-screen")}>
       <Navbar />
       {/* <div className="mx-3 md:container md:mx-auto dark:bg-gray-900 p-5 my-5 rounded-2xl md:min-h-[96vh] text-black dark:text-white"> */}
       <div
