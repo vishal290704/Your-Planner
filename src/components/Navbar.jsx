@@ -1,5 +1,6 @@
 import { FaSun, FaMoon } from "react-icons/fa";
-import { useWebContext } from "../contexts/webContexts";
+// import { useWebContext } from "../contexts/webContexts";
+import { useWebContext } from "../contexts/Context";
 
 const Navbar = () => {
   const { darkMode, toggleDarkMode } = useWebContext();
