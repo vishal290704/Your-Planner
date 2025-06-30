@@ -5,7 +5,11 @@ const Navbar = () => {
   const { darkMode, toggleDarkMode } = useWebContext();
 
   return (
-    <nav className="flex justify-between items-center bg-slate-600 text-white px-6 py-4 shadow-md dark:bg-gray-800">
+    <nav
+      className={`flex justify-between items-center px-6 py-4 shadow-md transition-all duration-300 ${
+        darkMode ? "bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 text-white" : "bg-red-100 text-black"
+      }`}
+    >
       {/* Left Nav Links */}
       <ul className="flex gap-6">
         <li className="cursor-pointer hover:font-bold transition-all">Home</li>
@@ -17,7 +21,11 @@ const Navbar = () => {
         <button
           onClick={toggleDarkMode}
           aria-label="Toggle Dark Mode"
-          className="flex items-center justify-center bg-white dark:bg-gray-900 text-black dark:text-white px-3 py-2 mx-2 rounded-md shadow transition duration-300 w-[140px] hover:bg-gray-200 dark:hover:bg-gray-700"
+          className={`flex items-center justify-center px-3 py-2 mx-2 rounded-md shadow transition duration-300 w-[140px] ${
+            darkMode
+              ? "bg-gray-900 text-white hover:bg-gray-700"
+              : "bg-white text-black hover:bg-blue-200"
+          }`}
         >
           {darkMode ? (
             <>

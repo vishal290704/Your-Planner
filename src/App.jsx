@@ -91,7 +91,7 @@ function AppContent() {
           darkMode ? styles.darkText : styles.lightText,
           darkMode ? styles.darkTransition : styles.lightTransition,
           darkMode ? styles.darkBorder : styles.lightBorder,
-          darkMode ? styles.darkGradientCompleted : styles.darkGradientUncompleted,
+          // darkMode ? styles.darkGradientCompleted : styles.darkGradientUncompleted,
           "mx-3 md:container md:mx-auto p-5 my-5 rounded-2xl md:min-h-[96vh] transition-colors duration-300"
         )}
       >
@@ -141,10 +141,10 @@ function AppContent() {
               className={`todo flex justify-between items-center p-3 rounded-lg shadow my-1.5 transition-colors duration-300 ${
                 item.isCompleted
                   ? darkMode
-                    ? "bg-gradient-to-r from-gray-900 via-gray-800 to-gray-600"
+                    ? "bg-gray-600"
                     : "bg-violet-100"
                   : darkMode
-                  ? "bg-gradient-to-r from-violet-900 via-purple-900 to-indigo-600"
+                  ? "bg-violet-900"
                   : "bg-white"
               }`}
             >
