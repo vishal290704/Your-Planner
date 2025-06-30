@@ -18,6 +18,10 @@ export const styles = {
   darkTransition: "transition duration-300 ease-in-out",
   lightTransition: "transition duration-300 ease-in-out",
 
+  darkinnerbg: "bg-gray-500",
+  lightinnerbg: "bg-white", 
+
+
   darkGradientCompleted:
     "bg-gradient-to-r from-gray-600 via-gray-700 to-gray-900",
   darkGradientUncompleted:

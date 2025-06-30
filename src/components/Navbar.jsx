@@ -7,7 +7,7 @@ const Navbar = () => {
   return (
     <nav
       className={`flex justify-between items-center px-6 py-4 shadow-md transition-all duration-300 ${
-        darkMode ? "bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 text-white" : "bg-red-100 text-black"
+        darkMode ? "bg-gradient-to-r from-gray-800 via-gray-700 to-gray-800 text-white" : "bg-red-100 text-black"
       }`}
     >
       {/* Left Nav Links */}
