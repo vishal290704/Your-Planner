@@ -38,3 +38,4 @@ export const styles = {
   inputBorderDark: "border-gray-700",
   inputBorderLight: "border-gray-300",
 };
+
